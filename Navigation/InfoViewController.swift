@@ -10,11 +10,10 @@ import UIKit
 class InfoViewController: UIViewController {
     private let backButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-        button.setTitle("Show message", for: .normal)
+        button.setTitle("Назад", for: .normal)
         button.backgroundColor = .black
         return button
     }()
-    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
