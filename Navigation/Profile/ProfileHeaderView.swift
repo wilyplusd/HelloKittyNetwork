@@ -2,12 +2,9 @@
 import UIKit
 
 final class ProfileHeaderView: UIView {
-    private var isPortraitOrientation: Bool {
-        return UIDevice.current.orientation == .portrait
-    }
     
-    private var portaraitLayout = [NSLayoutConstraint]()
-    private var landscapeLayout = [NSLayoutConstraint]()
+    private var viewLayout = [NSLayoutConstraint]()
+    private var statusText:String?
     
     private lazy var avatarImageView: UIImageView = {
         let image = UIImageView()
@@ -43,9 +40,14 @@ final class ProfileHeaderView: UIView {
     private lazy var statusTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         textField.layer.backgroundColor = UIColor.white.cgColor
-        textField.textColor = UIColor.systemGray6
-        textField.text = "Введите статус"
+        textField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        textField.textColor = UIColor.black
+        textField.layer.cornerRadius = 12
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.layer.borderWidth = 1
+        
         return textField
     }()
     
@@ -64,17 +66,17 @@ final class ProfileHeaderView: UIView {
     }()
     
     @objc private func buttonPressed() {
-        statusLabel.text = statusTextField.text!
-        //print(statusLabel.text!)
-    }
-    public func activatePortrait() {
-        NSLayoutConstraint.deactivate(landscapeLayout)
-        NSLayoutConstraint.activate(portaraitLayout)
+        statusLabel.text = statusText!
     }
     
-    public func activateLandscape() {
-        NSLayoutConstraint.deactivate(portaraitLayout)
-        NSLayoutConstraint.activate(landscapeLayout)
+    @objc private func statusTextChanged(){
+        statusText = statusTextField.text!
+    
+    }
+    
+    public func activateView() {
+        NSLayoutConstraint.deactivate(viewLayout)
+        NSLayoutConstraint.activate(viewLayout)
     }
     
     func setupView(){
@@ -84,7 +86,7 @@ final class ProfileHeaderView: UIView {
         addSubview(statusTextField)
         addSubview(setStatusButton)
 
-        portaraitLayout = [
+        viewLayout = [
             avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             avatarImageView.heightAnchor.constraint(equalToConstant: 100),
@@ -98,27 +100,8 @@ final class ProfileHeaderView: UIView {
             
             statusTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 80),
             statusTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 140),
-            
-            setStatusButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 130),
-            setStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            setStatusButton.heightAnchor.constraint(equalToConstant: 50),
-            setStatusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-        ]
-        
-        landscapeLayout = [
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 100),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 100),
-            
-            fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-            fullNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 140),
-
-            statusLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 50),
-            statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 140),
-            
-            statusTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 80),
-            statusTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 140),
+            statusTextField.heightAnchor.constraint(equalToConstant: 40),
+            statusTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
             setStatusButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 130),
             setStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
