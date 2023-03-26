@@ -45,17 +45,26 @@ class InfoViewController: UIViewController {
     
     @objc private func backAction() {
         let alert = UIAlertController(title: "Сообщение", message: "Вывести сообщение?", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Кнопка 1", style: .default) { _ in
+        let okAction = UIAlertAction(title: "Вывести текст", style: .default) { _ in
             print("Нажата кнопка 1")
         }
-        let cancelAction = UIAlertAction(title: "Кнопка 2", style: .destructive){
-            _ in
-                print("Нажата кнопка 2")
+        let cancelAction = UIAlertAction(title: "Feed", style: .destructive){
+            _ in self.tapAction()
+            
         }
         alert.addAction(cancelAction)
         alert.addAction(okAction)
         present(alert, animated: true)
     }
    
+    
+
+
+    @objc private func tapAction() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    
+
 }
 
