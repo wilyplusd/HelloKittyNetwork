@@ -66,11 +66,11 @@ final class ProfileHeaderView: UIView {
     }()
     
     @objc private func buttonPressed() {
-        statusLabel.text = statusText!
+        statusLabel.text = statusText ?? " "
     }
     
     @objc private func statusTextChanged(){
-        statusText = statusTextField.text!
+        statusText = statusTextField.text ?? " "
     
     }
     

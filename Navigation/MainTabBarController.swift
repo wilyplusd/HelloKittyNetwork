@@ -14,14 +14,11 @@ final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupControllers()
-
-        // Do any additional setup after loading the view.
     }
 
-    private func setupControllers(){
+    private func setupControllers() {
         let navigationController1 = UINavigationController(rootViewController: profile)
         let navigationController2 = UINavigationController(rootViewController: newsFeed)
-        
 
         newsFeed.tabBarItem.title = "Feed"
         newsFeed.tabBarItem.image = UIImage(systemName: "note")
@@ -29,6 +26,7 @@ final class MainTabBarController: UITabBarController {
         profile.tabBarItem.image = UIImage(systemName: "folder")
         
         viewControllers = [navigationController1, navigationController2]
+        
     }
 
 }
