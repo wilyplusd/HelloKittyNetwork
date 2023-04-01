@@ -52,6 +52,7 @@ class InfoViewController: UIViewController {
     
         let cancelAction = UIAlertAction(title: "Назад", style: .destructive){
             _ in
+    
             self.dismiss(animated: true)
         }
         alert.addAction(cancelAction)

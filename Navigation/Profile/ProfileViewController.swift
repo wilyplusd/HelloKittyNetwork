@@ -4,57 +4,67 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     private let profileHeadView = ProfileHeaderView()
-    private var constraintsHeadView = [NSLayoutConstraint]()
-   
-    private lazy var newButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemGray2
-        button.setTitle("New button", for: .normal)
-        button.layer.cornerRadius = 4
-        button.layer.shadowOffset = CGSize(width: 4, height: 4)
-        button.layer.shadowRadius = 4
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOpacity = 0.7
-        
-        return button
-    }()
+    private let post: [Post] = Post.makePost()
     
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+        return tableView
+    }()
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Profile"
-        navigationItem.hidesBackButton = true
-        profileHeadView.backgroundColor = .lightGray
         view.backgroundColor = .white
         setupProfileHeadView()
-        
+        setupTable()
     }
     
-    private func setupProfileHeadView(){
-        profileHeadView.translatesAutoresizingMaskIntoConstraints = false
-        profileHeadView.backgroundColor = .systemGray4
-        view.addSubview(profileHeadView)
-        view.addSubview(newButton)
-
-        constraintsHeadView = [
-            profileHeadView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            profileHeadView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            profileHeadView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileHeadView.heightAnchor.constraint(equalToConstant: 220),
-            
-            newButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            newButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            newButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            newButton.heightAnchor.constraint(equalToConstant: 50),
+    private func setupTable() {
+        view.addSubview(tableView)
         
-        ]
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
+    private func setupProfileHeadView(){
         profileHeadView.setupView()
     }
+   
+}
+
+extension ProfileViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        post.count
+    }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        NSLayoutConstraint.activate(constraintsHeadView)
-        profileHeadView.activateView()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
+        cell.setupCell(post: post[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView,
+            viewForHeaderInSection section: Int) -> UIView? {
+        if (section == 0) {
+            let headerView = ProfileHeaderView()
+            headerView.setupView()
+            return headerView
+        }
+        return nil
     }
     
 }
+
+extension ProfileViewController: UITableViewDelegate {
+}
+
+
+    

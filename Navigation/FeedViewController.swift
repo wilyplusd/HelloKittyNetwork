@@ -11,7 +11,7 @@ final class FeedViewController: UIViewController {
     
     
     
-    private let post = Post(title: "На занятии вы узнали о UIViewController и его жизненном цикле.")
+    private let post = Post(author: "Иванов И.И.", title: "На занятии вы узнали о UIViewController и его жизненном цикле.")
     
     
     override func viewDidLoad() {
