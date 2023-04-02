@@ -22,18 +22,22 @@ final class LogInHederView: UIView {
         view.backgroundColor = .white
         return view
     }()
-   
-    private lazy var logoImageView: UIImageView = {
-        let image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.masksToBounds = true
-
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.image = UIImage(named: "logo")
-        return image
-    }()
     
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .systemGray4
+        stackView.axis = .vertical
+
+        stackView.distribution = .fillEqually
+        stackView.spacing = 16
+        stackView.layer.cornerRadius = 10
+        stackView.layer.borderColor = UIColor.lightGray.cgColor
+        stackView.layer.borderWidth = 0.5
+        return stackView
+    }()
+
+
     private lazy var userNameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -42,12 +46,9 @@ final class LogInHederView: UIView {
         textField.autocapitalizationType = .none
         textField.textColor = UIColor.black
         textField.layer.cornerRadius = 12
-        
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 10
         textField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        
+        textField.placeholder = " Имя пользователя"
         textField.backgroundColor = .systemGray6
         return textField
     }()
@@ -66,14 +67,23 @@ final class LogInHederView: UIView {
         textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 10
         textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        
+        textField.placeholder = " Пароль"
         textField.backgroundColor = .systemGray6
         textField.isSecureTextEntry = true
-        
-        
         return textField
     }()
-    
+
+   
+    private lazy var logoImageView: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.layer.masksToBounds = true
+
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.image = UIImage(named: "logo")
+        return image
+    }()
     
     private lazy var logButton: UIButton = {
         let button = UIButton()
@@ -103,8 +113,9 @@ final class LogInHederView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(logoImageView)
-        contentView.addSubview(userNameTextField)
-        contentView.addSubview(passwordTextField)
+        contentView.addSubview(stackView)
+        stackView.addSubview(userNameTextField)
+        stackView.addSubview(passwordTextField)
         contentView.addSubview(logButton)
 
         NSLayoutConstraint.activate([
@@ -120,27 +131,33 @@ final class LogInHederView: UIView {
             contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
             
+            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            stackView.heightAnchor.constraint(equalToConstant: 100),
+            
             logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120),
             logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 100),
             logoImageView.widthAnchor.constraint(equalToConstant: 100),
 
-            userNameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
-            userNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            userNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            userNameTextField.topAnchor.constraint(equalTo: stackView.topAnchor),
+            userNameTextField.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            userNameTextField.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             userNameTextField.heightAnchor.constraint(equalToConstant: 50),
 
-            passwordTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 0),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            passwordTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor),
+            passwordTextField.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            passwordTextField.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
-            logButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
+            logButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
             logButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.trailingAnchor.constraint(equalTo:contentView.trailingAnchor, constant: -16),
-            //logButton.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
+        
+
     }
     
     
