@@ -47,7 +47,7 @@ final class ProfileHeaderView: UIView {
         textField.layer.cornerRadius = 12
         textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.borderWidth = 1
-        
+        textField.placeholder = " Введите статус"
         return textField
     }()
     

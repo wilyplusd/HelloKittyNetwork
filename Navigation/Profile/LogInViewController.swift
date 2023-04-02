@@ -3,18 +3,21 @@ import SwiftUI
 
 class LogInViewController: UIViewController {
 
-    private var viewLayout = [NSLayoutConstraint]()
     private let notification = NotificationCenter.default
-    private var portaraitConstraint = [NSLayoutConstraint]()
-    private var landscapeConstraint = [NSLayoutConstraint]()
-    private var isPortraitOrientation: Bool {
-        return UIDevice.current.orientation == .portrait
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-        view.backgroundColor = .white
-    }
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .systemGray4
+        stackView.axis = .vertical
+
+        stackView.distribution = .fillEqually
+        stackView.spacing = 16
+        stackView.layer.cornerRadius = 10
+        stackView.layer.borderColor = UIColor.lightGray.cgColor
+        stackView.layer.borderWidth = 0.5
+        return stackView
+    }()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -33,7 +36,6 @@ class LogInViewController: UIViewController {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.masksToBounds = true
-
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.image = UIImage(named: "logo")
@@ -48,12 +50,9 @@ class LogInViewController: UIViewController {
         textField.autocapitalizationType = .none
         textField.textColor = UIColor.black
         textField.layer.cornerRadius = 12
-        
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 10
         textField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        
+        textField.placeholder = " Имя пользователя"
         textField.backgroundColor = .systemGray6
         return textField
     }()
@@ -72,11 +71,9 @@ class LogInViewController: UIViewController {
         textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 10
         textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        
+        textField.placeholder = " Пароль"
         textField.backgroundColor = .systemGray6
         textField.isSecureTextEntry = true
-        
-        
         return textField
     }()
     
@@ -91,15 +88,10 @@ class LogInViewController: UIViewController {
         return button
     }()
     
-    @objc private func buttonPressed() {
-        let main = MainTabBarController()
-        main.modalPresentationStyle = .fullScreen
-        present(main, animated: true)
-    }
-    
-    public func activateView() {
-        NSLayoutConstraint.deactivate(viewLayout)
-        NSLayoutConstraint.activate(viewLayout)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+        view.backgroundColor = .white
     }
     
     func setupView(){
@@ -107,11 +99,12 @@ class LogInViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(logoImageView)
-        contentView.addSubview(userNameTextField)
-        contentView.addSubview(passwordTextField)
+        contentView.addSubview(stackView)
+        stackView.addSubview(userNameTextField)
+        stackView.addSubview(passwordTextField)
         contentView.addSubview(logButton)
-
-        portaraitConstraint = [
+        
+        NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -123,67 +116,35 @@ class LogInViewController: UIViewController {
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
+            
+            stackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            stackView.heightAnchor.constraint(equalToConstant: 100),
             
             logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120),
             logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 100),
             logoImageView.widthAnchor.constraint(equalToConstant: 100),
 
-            userNameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
-            userNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            userNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            userNameTextField.topAnchor.constraint(equalTo: stackView.topAnchor),
+            userNameTextField.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            userNameTextField.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             userNameTextField.heightAnchor.constraint(equalToConstant: 50),
 
-            passwordTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 0),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            passwordTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor),
+            passwordTextField.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            passwordTextField.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
-            logButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
+            logButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
             logButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.trailingAnchor.constraint(equalTo:contentView.trailingAnchor, constant: -16),
-        ]
+        ])
         
-        landscapeConstraint = [
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-            contentView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
-            
-            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoImageView.heightAnchor.constraint(equalToConstant: 100),
-            logoImageView.widthAnchor.constraint(equalToConstant: 100),
-
-            userNameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 20),
-            userNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            userNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            userNameTextField.heightAnchor.constraint(equalToConstant: 50),
-
-            passwordTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor, constant: 0),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
-            logButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
-            logButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            logButton.heightAnchor.constraint(equalToConstant: 50),
-            logButton.trailingAnchor.constraint(equalTo:contentView.trailingAnchor, constant: -16),
-        ]
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        isPortraitOrientation ? activatePortrait() : activateLandscape()
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -196,6 +157,12 @@ class LogInViewController: UIViewController {
         notification.removeObserver(UIResponder.keyboardWillShowNotification)
         notification.removeObserver(UIResponder.keyboardWillHideNotification)
     }
+    @objc private func buttonPressed() {
+        let main = MainTabBarController()
+        main.modalPresentationStyle = .fullScreen
+        present(main, animated: true)
+    }
+    
     
     @objc private func keyboardWillShow(notification: NSNotification) {
         if let keybordSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
@@ -210,14 +177,5 @@ class LogInViewController: UIViewController {
         
     }
    
-    private func activatePortrait() {
-        NSLayoutConstraint.deactivate(landscapeConstraint)
-        NSLayoutConstraint.activate(portaraitConstraint)
-    }
-    
-    private func activateLandscape() {
-        NSLayoutConstraint.deactivate(portaraitConstraint)
-        NSLayoutConstraint.activate(landscapeConstraint)
-    }
     
 }
