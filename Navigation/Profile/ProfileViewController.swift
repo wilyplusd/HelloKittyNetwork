@@ -22,6 +22,9 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Profile"
+        navigationItem.hidesBackButton = true
+        profileHeadView.backgroundColor = .lightGray
         view.backgroundColor = .white
         setupProfileHeadView()
         

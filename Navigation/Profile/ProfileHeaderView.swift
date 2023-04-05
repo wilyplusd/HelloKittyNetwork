@@ -47,7 +47,7 @@ final class ProfileHeaderView: UIView {
         textField.layer.cornerRadius = 12
         textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.borderWidth = 1
-        
+        textField.placeholder = " Введите статус"
         return textField
     }()
     
@@ -66,11 +66,11 @@ final class ProfileHeaderView: UIView {
     }()
     
     @objc private func buttonPressed() {
-        statusLabel.text = statusText!
+        statusLabel.text = statusText ?? " "
     }
     
     @objc private func statusTextChanged(){
-        statusText = statusTextField.text!
+        statusText = statusTextField.text ?? " "
     
     }
     
