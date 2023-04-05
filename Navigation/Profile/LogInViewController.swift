@@ -145,7 +145,6 @@ class LogInViewController: UIViewController {
         
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         notification.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -157,10 +156,14 @@ class LogInViewController: UIViewController {
         notification.removeObserver(UIResponder.keyboardWillShowNotification)
         notification.removeObserver(UIResponder.keyboardWillHideNotification)
     }
+    
     @objc private func buttonPressed() {
         let main = MainTabBarController()
         main.modalPresentationStyle = .fullScreen
         present(main, animated: true)
+//        let main = ProfileViewController()
+//        main.modalPresentationStyle = .fullScreen
+//        navigationController?.pushViewController(main, animated: true)
     }
     
     
