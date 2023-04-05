@@ -121,69 +121,9 @@ class PostTableViewCell: UITableViewCell {
             postView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -insets),
         ])
         
-//        NSLayoutConstraint.activate([
-//            postContentView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: viewInset),
-//            postContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: viewInset),
-//            postContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -viewInset),
-//            postContentView.heightAnchor.constraint(equalToConstant: superview contentView.trailingAnchor, constant: -viewInset),
-////            postContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -viewInset)
-//        ])
-//
-//
-//        NSLayoutConstraint.activate([
-//            postTitle.topAnchor.constraint(equalTo: postContentView.topAnchor),
-//            postTitle.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor),
-//            postTitle.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor),
-////            postTitle.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor),
-//            postTitle.widthAnchor.constraint(equalTo: postContentView.widthAnchor),
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            postImageView.topAnchor.constraint(equalTo: postTitle.topAnchor, constant: 12),
-//            //postImageView.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: imageInset),
-//            postImageView.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor),
-//           // postImageView.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -16),
-//
-//          //  postImageView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -imageInset),
-//          //  postImageView.widthAnchor.constraint(equalToConstant: heightView - imageInset * 2)
-//        ])
-//
-//
-//
-//        NSLayoutConstraint.activate([
-//            postDescription.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 16),
-//            postDescription.leadingAnchor.constraint(equalTo: postImageView.leadingAnchor),
-//            postDescription.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor),
-//            postDescription.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -imageInset)
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            postView.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: 16),
-//            postView.leadingAnchor.constraint(equalTo: postDescription.leadingAnchor),
-//            postView.trailingAnchor.constraint(equalTo: postDescription.trailingAnchor),
-//            postView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -imageInset)
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            postLike.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: 16),
-//            postLike.leadingAnchor.constraint(equalTo: postDescription.leadingAnchor),
-//            postLike.trailingAnchor.constraint(equalTo: postDescription.trailingAnchor),
-//            postLike.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -imageInset)
-//        ])
-//
+
+
     }
 
-    
-//
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-
+   
 }

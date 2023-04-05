@@ -9,7 +9,7 @@ import UIKit
 
 final class MainTabBarController: UITabBarController {
     private let profile = ProfileViewController()
-    private let newsFeed = FeedViewController()
+    private let newsFeed = PhotosTableViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()

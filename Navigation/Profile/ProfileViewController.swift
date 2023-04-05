@@ -23,6 +23,10 @@ final class ProfileViewController: UIViewController {
         setupTable()
     }
     
+    private func setup() {
+        
+    }
+    
     private func setupTable() {
         view.addSubview(tableView)
         
@@ -41,6 +45,10 @@ final class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         post.count
     }
@@ -53,13 +61,25 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
             viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+        
         if (section == 0) {
             let headerView = ProfileHeaderView()
             headerView.setupView()
             return headerView
         }
+        if (section == 1) {
+            let photosTableView = PhotosTableViewController()
+            //photosTableView.view.view
+           // photosTableView.setupCollectionView()
+            let view = UILabel()
+            view.text = "Aaaaaaaaaaaaaaaaaa"
+            return view
+        }
+        
         return nil
     }
+    
     
 }
 
