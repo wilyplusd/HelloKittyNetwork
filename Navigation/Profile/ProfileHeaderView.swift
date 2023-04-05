@@ -54,6 +54,7 @@ final class ProfileHeaderView: UIView {
         textField.layer.cornerRadius = 12
         textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.borderWidth = 1
+        textField.placeholder = "Введите статус"
         
         return textField
     }()
@@ -82,7 +83,7 @@ final class ProfileHeaderView: UIView {
     }
     
     func setupView() {
-        backgroundColor = .systemGray4
+        backgroundColor = .white
         addSubview(profileContentView)
         profileContentView.addSubview(avatarImageView)
         profileContentView.addSubview(fullNameLabel)
@@ -91,7 +92,7 @@ final class ProfileHeaderView: UIView {
         profileContentView.addSubview(setStatusButton)
 
         NSLayoutConstraint.activate([
-            profileContentView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            profileContentView.topAnchor.constraint(equalTo: topAnchor),
             profileContentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             profileContentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             profileContentView.heightAnchor.constraint(equalToConstant: 220),

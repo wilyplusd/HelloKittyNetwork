@@ -2,12 +2,10 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    
-    private let profileHeadView = ProfileHeaderView()
     private let post: [Post] = Post.makePost()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,8 +16,7 @@ final class ProfileViewController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        setupProfileHeadView()
+        view.backgroundColor = .systemGray2
         setupTable()
     }
     
@@ -37,11 +34,6 @@ final class ProfileViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-
-    private func setupProfileHeadView(){
-        profileHeadView.setupView()
-    }
-   
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -59,14 +51,22 @@ extension ProfileViewController: UITableViewDataSource {
         return cell
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 220
+    }
+    
     func tableView(_ tableView: UITableView,
             viewForHeaderInSection section: Int) -> UIView? {
         return nil
         
         if (section == 0) {
-            let headerView = ProfileHeaderView()
-            headerView.setupView()
-            return headerView
+            let view = ProfileHeaderView()
+            view.setupView()
+            return view
         }
         if (section == 1) {
             let photosTableView = PhotosTableViewController()
