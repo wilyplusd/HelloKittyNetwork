@@ -120,10 +120,5 @@ class PostTableViewCell: UITableViewCell {
             postView.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -insets),
             postView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -insets),
         ])
-        
-
-
     }
-
-   
 }

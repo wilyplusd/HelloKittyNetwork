@@ -4,6 +4,8 @@ import UIKit
 final class ProfileViewController: UIViewController {
     private let post: [Post] = Post.makePost()
     
+    private let photosController = PhotosTableViewController()
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
@@ -37,12 +39,11 @@ final class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        post.count
+        if (section == 0) {
+            return 0
+        }
+        return post.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -52,39 +53,30 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 220
+        if (section == 0) {
+            return 200
+        }
+        if (section == 1) {
+            return 160
+        }
+        return 0
     }
-    
-    func tableView(_ tableView: UITableView,
-            viewForHeaderInSection section: Int) -> UIView? {
-        return nil
-        
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if (section == 0) {
             let view = ProfileHeaderView()
             view.setupView()
             return view
         }
         if (section == 1) {
-            let photosTableView = PhotosTableViewController()
-            //photosTableView.view.view
-           // photosTableView.setupCollectionView()
-            let view = UILabel()
-            view.text = "Aaaaaaaaaaaaaaaaaa"
-            return view
+            return photosController.view
         }
-        
-        return nil
+        return UIView()
     }
-    
-    
 }
 
-extension ProfileViewController: UITableViewDelegate {
-}
-
-
-    
+extension ProfileViewController: UITableViewDelegate {}

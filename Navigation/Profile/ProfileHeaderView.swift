@@ -79,11 +79,10 @@ final class ProfileHeaderView: UIView {
     
     @objc private func statusTextChanged(){
         statusText = statusTextField.text ?? " "
-    
     }
     
     func setupView() {
-        backgroundColor = .white
+        backgroundColor = .systemGray4
         addSubview(profileContentView)
         profileContentView.addSubview(avatarImageView)
         profileContentView.addSubview(fullNameLabel)
