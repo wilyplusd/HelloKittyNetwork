@@ -21,11 +21,7 @@ final class ProfileViewController: UIViewController {
         view.backgroundColor = .systemGray2
         setupTable()
     }
-    
-    private func setup() {
-        
-    }
-    
+            
     private func setupTable() {
         view.addSubview(tableView)
         

@@ -9,6 +9,7 @@ final class PhotosTableViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
+//        imageView.addTarget(self, action: imageButton, for: .touchUpInside)
         return imageView
     }()
     
@@ -24,4 +25,14 @@ final class PhotosTableViewCell: UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
+    
+    @objc private func imageButton(){
+        let main = PhotosViewController()
+        main.modalPresentationStyle = .fullScreen
+//        navigationController?.pushViewController(main, animated: true)
+ 
+//        present(main, animated: true)
+
+    }
+    
 }

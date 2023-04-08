@@ -14,10 +14,18 @@ final class PhotosViewController: UIViewController {
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         return collectionView
     }()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated) // No need for semicolon
+        self.navigationController?.navigationBar.isHidden = true
+        
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Photo Gallery"
+        self.navigationController?.navigationBar.isHidden = true
         layout()
         setupTablePhotos()
     }
@@ -60,6 +68,8 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     private var sideInset: CGFloat { return 8 }
     private var elementCount: CGFloat { return 3 }
     private var insetsCount: CGFloat { return elementCount + 1 }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             let width = (collectionView.bounds.width - sideInset) / 3 - sideInset

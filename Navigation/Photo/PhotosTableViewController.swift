@@ -85,8 +85,11 @@ extension PhotosTableViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        present(PhotosViewController(), animated: true)
-    
+        //         present(PhotosViewController(), animated: true)
+        let main = ProfileViewController()
+                main.modalPresentationStyle = .fullScreen
+                navigationController?.pushViewController(main, animated: true)
+        
     }
 }
 
