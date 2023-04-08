@@ -4,6 +4,7 @@ import SwiftUI
 class LogInViewController: UIViewController {
 
     private let notification = NotificationCenter.default
+    private(set) public var isLoggedIn: Bool = false
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -92,6 +93,7 @@ class LogInViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         view.backgroundColor = .white
+        navigationItem.setHidesBackButton(true, animated: false)
     }
     
     func setupView(){
@@ -158,12 +160,8 @@ class LogInViewController: UIViewController {
     }
     
     @objc private func buttonPressed() {
-        let main = MainTabBarController()
-        main.modalPresentationStyle = .fullScreen
-        present(main, animated: true)
-//        let main = ProfileViewController()
-//        main.modalPresentationStyle = .fullScreen
-//        navigationController?.pushViewController(main, animated: true)
+        isLoggedIn = true
+        navigationController?.popViewController(animated: true)
     }
     
     
