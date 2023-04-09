@@ -156,12 +156,9 @@ final class LogInHederView: UIView {
             logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.trailingAnchor.constraint(equalTo:contentView.trailingAnchor, constant: -16),
         ])
-        
-
     }
-    
-    
 }
+
 extension LogInHederView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)

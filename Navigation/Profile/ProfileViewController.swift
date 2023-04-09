@@ -1,10 +1,14 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, PhotosTableDelegate {
     private let post: [Post] = Post.makePost()
     
     private let photosController = PhotosTableViewController()
+    
+    internal func photoClicked() {
+        navigationController?.pushViewController(PhotosViewController(), animated: true)
+    }
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -19,6 +23,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGray2
+        photosController.delegate = self
         setupTable()
     }
             

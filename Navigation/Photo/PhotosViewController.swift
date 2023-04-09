@@ -10,22 +10,25 @@ final class PhotosViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGray2
+        collectionView.backgroundColor = .white
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         return collectionView
     }()
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
+        self.navigationController?.navigationBar.isHidden = false
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated) // No need for semicolon
         self.navigationController?.navigationBar.isHidden = true
         
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Photo Gallery"
-        self.navigationController?.navigationBar.isHidden = true
         layout()
         setupTablePhotos()
     }
@@ -87,4 +90,6 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         sideInset
     }
+    
+  
 }

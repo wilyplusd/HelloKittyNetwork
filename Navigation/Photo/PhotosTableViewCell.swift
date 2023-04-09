@@ -27,8 +27,8 @@ final class PhotosTableViewCell: UICollectionViewCell {
     }
     
     @objc private func imageButton(){
-        let main = PhotosViewController()
-        main.modalPresentationStyle = .fullScreen
+//        let main = PhotosViewController()
+//        main.modalPresentationStyle = .fullScreen
 //        navigationController?.pushViewController(main, animated: true)
  
 //        present(main, animated: true)

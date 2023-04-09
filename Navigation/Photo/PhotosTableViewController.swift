@@ -1,8 +1,8 @@
-
-
 import UIKit
 
 final class PhotosTableViewController: UIViewController {
+    
+    weak var delegate: PhotosTableDelegate?
     
     private let photo: [Photo] = Photo.fillPhoto()
     
@@ -85,11 +85,7 @@ extension PhotosTableViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //         present(PhotosViewController(), animated: true)
-        let main = ProfileViewController()
-                main.modalPresentationStyle = .fullScreen
-                navigationController?.pushViewController(main, animated: true)
-        
+        delegate?.photoClicked()
     }
 }
 
@@ -106,3 +102,6 @@ extension UIViewController {
     }
 }
 
+protocol PhotosTableDelegate: AnyObject {
+    func photoClicked()
+}
