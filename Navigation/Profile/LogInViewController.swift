@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 
 final class LogInViewController: UIViewController {
-
+    private(set) public var isLoggedIn: Bool = false
     private let logView = LogInHederView()
     private let notification = NotificationCenter.default
  
@@ -13,6 +13,7 @@ final class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.setHidesBackButton(true, animated: false)
         logView.addLoginButtonTarget(self, action: #selector(buttonPressed))
     }
 
@@ -42,9 +43,11 @@ final class LogInViewController: UIViewController {
     }
     
     @objc private func buttonPressed() {
-        let main = MainTabBarController()
-        main.modalPresentationStyle = .fullScreen
-        present(main, animated: true)
+        //        let main = MainTabBarController()
+        //        main.modalPresentationStyle = .fullScreen
+        //        present(main, animated: true)
+            isLoggedIn = true
+                navigationController?.popViewController(animated: true)
     }
     
 }
