@@ -6,7 +6,7 @@ final class ProfileViewController: UIViewController, PhotosTableDelegate {
     
     private let photosController = PhotosTableViewController()
     
-    internal func photoClicked() {
+    internal func galleryButtonClicked() {
         navigationController?.pushViewController(PhotosViewController(), animated: true)
     }
     

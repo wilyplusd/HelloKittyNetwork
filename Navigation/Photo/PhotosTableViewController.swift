@@ -15,7 +15,19 @@ final class PhotosTableViewController: UIViewController {
         return label
     }()
     
+    private lazy var galleryButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "arrow.forward"), for: .normal)
+        button.addTarget(self, action: #selector(galleryButtonClicked), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var collectionView = makeCollectionView(scrollDirection: .horizontal)
+    
+    @objc private func galleryButtonClicked() {
+        delegate?.galleryButtonClicked()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +44,14 @@ final class PhotosTableViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(titleLabel)
         view.addSubview(collectionView)
+        view.addSubview(galleryButton)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo:view.topAnchor, constant: 12),
+            galleryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+            galleryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            
+            titleLabel.centerYAnchor.constraint(equalTo: galleryButton.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -83,10 +98,6 @@ extension PhotosTableViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         sideInset
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.photoClicked()
-    }
 }
 
 extension UIViewController {
@@ -96,12 +107,11 @@ extension UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGray2
         collectionView.register(PhotosTableViewCell.self, forCellWithReuseIdentifier: PhotosTableViewCell.identifier)
         return collectionView
     }
 }
 
 protocol PhotosTableDelegate: AnyObject {
-    func photoClicked()
+    func galleryButtonClicked()
 }

@@ -72,8 +72,6 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     private var elementCount: CGFloat { return 3 }
     private var insetsCount: CGFloat { return elementCount + 1 }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             let width = (collectionView.bounds.width - sideInset) / 3 - sideInset
             return CGSize(width: width, height: width)
@@ -90,6 +88,4 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         sideInset
     }
-    
-  
 }
