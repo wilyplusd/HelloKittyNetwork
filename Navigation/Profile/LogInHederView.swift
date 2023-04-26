@@ -9,6 +9,9 @@ import UIKit
 import SwiftUI
 
 final class LogInHederView: UIView {
+    
+    private let normalFieldColor = UIColor.systemGray6
+    private let errorFieldColor = UIColor.red.withAlphaComponent(0.3)
  
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -37,7 +40,6 @@ final class LogInHederView: UIView {
         return stackView
     }()
 
-
     private lazy var userNameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +51,8 @@ final class LogInHederView: UIView {
         textField.layer.cornerRadius = 10
         textField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         textField.placeholder = " Имя пользователя"
-        textField.backgroundColor = .systemGray6
+        textField.backgroundColor = normalFieldColor
+        textField.delegate = self
         return textField
     }()
 
@@ -68,11 +71,22 @@ final class LogInHederView: UIView {
         textField.layer.cornerRadius = 10
         textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         textField.placeholder = " Пароль"
-        textField.backgroundColor = .systemGray6
+        textField.backgroundColor = normalFieldColor
         textField.isSecureTextEntry = true
+        textField.delegate = self
         return textField
     }()
-
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .systemRed
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
    
     private lazy var logoImageView: UIImageView = {
         let image = UIImageView()
@@ -109,6 +123,30 @@ final class LogInHederView: UIView {
         logButton.addTarget(target, action: action, for: .touchUpInside)
     }
     
+    func validateInputs() -> Bool {
+        let nameLen = userNameTextField.text?.count ?? 0
+        let passLen = passwordTextField.text?.count ?? 0
+        var isError = nameLen == 0 && passLen == 0
+        userNameTextField.backgroundColor = nameLen > 0 ? normalFieldColor : errorFieldColor
+        passwordTextField.backgroundColor = passLen > 0 ? normalFieldColor : errorFieldColor
+        if (isError) {
+            return false
+        }
+
+        if (passLen < 8) {
+            errorLabel.text = "Пароль должен быть не меньше 8 символов"
+            errorLabel.isHidden = false
+            isError = true
+        } else if (!isStringEmail(str: userNameTextField.text ?? "")) {
+            errorLabel.text = "Неверный формат имени пользователя (email)"
+            errorLabel.isHidden = false
+            isError = true
+        } else {
+            errorLabel.isHidden = true
+        }
+        return !isError
+    }
+    
     func setupView() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -116,6 +154,7 @@ final class LogInHederView: UIView {
         contentView.addSubview(stackView)
         stackView.addSubview(userNameTextField)
         stackView.addSubview(passwordTextField)
+        stackView.addSubview(errorLabel)
         contentView.addSubview(logButton)
 
         NSLayoutConstraint.activate([
@@ -148,14 +187,26 @@ final class LogInHederView: UIView {
 
             passwordTextField.topAnchor.constraint(equalTo: userNameTextField.bottomAnchor),
             passwordTextField.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             passwordTextField.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
+            
+            errorLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 8),
+            errorLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
-            logButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+            logButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 16),
             logButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            logButton.heightAnchor.constraint(equalToConstant: 50),
             logButton.trailingAnchor.constraint(equalTo:contentView.trailingAnchor, constant: -16),
+            logButton.heightAnchor.constraint(equalToConstant: 50),
         ])
+    }
+    
+    func getName() -> String {
+        return userNameTextField.text ?? "";
+    }
+    
+    func getPass() -> String {
+        return passwordTextField.text ?? "";
     }
 }
 
@@ -163,5 +214,10 @@ extension LogInHederView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.backgroundColor = normalFieldColor
+        errorLabel.isHidden = true
     }
 }

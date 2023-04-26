@@ -43,11 +43,16 @@ final class LogInViewController: UIViewController {
     }
     
     @objc private func buttonPressed() {
-//        let main = MainTabBarController()
-//        main.modalPresentationStyle = .fullScreen
-//        present(main, animated: true)
-        isLoggedIn = true
-        navigationController?.popViewController(animated: true)
-    }
-    
+        logView.endEditing(true)
+        if (logView.validateInputs()) {
+            isLoggedIn = logView.getName() == "user@vk.com" && logView.getPass() == "password"
+            if (isLoggedIn) {
+                navigationController?.popViewController(animated: true)
+            } else {
+                let alert = UIAlertController(title: "Ошибка аутентификации", message: "Неверное имя пользователя или пароль", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                present(alert, animated: true, completion:nil)
+            }
+        }
+    }    
 }

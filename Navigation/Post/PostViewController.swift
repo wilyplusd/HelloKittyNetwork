@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import Post
 
 class PostViewController: UIViewController {
 
