@@ -2,7 +2,7 @@
 import UIKit
 
 final class ProfileViewController: UIViewController, PhotosTableDelegate {
-    private let post: [Post] = Post.makePost()
+    private var post: [Post] = Post.makePost()
     
     private let photosController = PhotosTableViewController()
     
@@ -49,8 +49,33 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
-        cell.setupCell(post: post[indexPath.row])
+        cell.setPost(post: post[indexPath.row])
+        cell.onLike = {
+            let i = indexPath.row
+            var p = self.post[i]
+            p.likes = (p.likes ?? 0) + 1
+            self.post[i] = p
+            cell.setPost(post: p)
+        }
+        cell.onOpen = {
+            let i = indexPath.row
+            var p = self.post[i]
+            let postController = PostViewController(post: p)
+            self.present(postController, animated: true)
+
+            p.view = (p.view ?? 0) + 1
+            self.post[i] = p
+            cell.setPost(post: p)
+        }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.post.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadData()
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

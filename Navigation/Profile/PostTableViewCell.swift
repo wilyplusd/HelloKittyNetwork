@@ -8,7 +8,11 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
-
+    
+    var onLike: (() -> ())?
+    var onOpen: (() -> ())?
+    var onSwipe: (() -> ())?
+    
     private let postContentView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -77,7 +81,7 @@ class PostTableViewCell: UITableViewCell {
         postView.text = ""
     }
     
-    func setupCell(post: Post) {
+    func setPost(post: Post) {
         postImageView.image = UIImage(named: post.image ?? "")
         postTitle.text = post.title
         postDescription.text = post.description
@@ -87,31 +91,39 @@ class PostTableViewCell: UITableViewCell {
     
     private func customizeCell() {
         postContentView.backgroundColor = .white
+        
+        let likeTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PostTableViewCell.likeTapped))
+        postLike.isUserInteractionEnabled = true
+        postLike.addGestureRecognizer(likeTapRecognizer)
+        
+        let imageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PostTableViewCell.imageTapped))
+        postImageView.isUserInteractionEnabled = true
+        postImageView.addGestureRecognizer(imageTapRecognizer)
     }
     
     var insets: CGFloat = 16
     
     private func layout() {
         [postContentView, postImageView, postTitle, postDescription, postLike, postView].forEach { contentView.addSubview($0) }
-            
+        
         NSLayoutConstraint.activate([
             postContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
             postContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             postContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
+            
             postTitle.topAnchor.constraint(equalTo: postContentView.topAnchor, constant: insets),
             postTitle.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: insets),
             postTitle.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -insets),
-
+            
             postImageView.topAnchor.constraint(equalTo: postTitle.bottomAnchor, constant: insets),
             postImageView.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor),
-
+            
             postDescription.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: insets),
             postDescription.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: insets),
             postDescription.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -insets),
-
+            
             postLike.topAnchor.constraint(equalTo: postDescription.bottomAnchor, constant: insets),
             postLike.leadingAnchor.constraint(equalTo: postContentView.leadingAnchor, constant: insets),
             postLike.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -insets),
@@ -120,5 +132,13 @@ class PostTableViewCell: UITableViewCell {
             postView.trailingAnchor.constraint(equalTo: postContentView.trailingAnchor, constant: -insets),
             postView.bottomAnchor.constraint(equalTo: postContentView.bottomAnchor, constant: -insets),
         ])
+    }
+    
+    @objc private func likeTapped(sender: UIGestureRecognizer) {
+        onLike?()
+    }
+    
+    @objc private func imageTapped(sender: UIGestureRecognizer) {
+        onOpen?()
     }
 }
