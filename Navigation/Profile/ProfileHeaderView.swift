@@ -4,7 +4,6 @@ import UIKit
 final class ProfileHeaderView: UIView {
     
     private var viewLayout = [NSLayoutConstraint]()
-    private var statusText:String?
     
     private let profileContentView: UIView = {
         let view = UIView()
@@ -74,11 +73,18 @@ final class ProfileHeaderView: UIView {
     }()
     
     @objc private func buttonPressed() {
-        statusLabel.text = statusText ?? " "
+        let statusText = statusTextField.text ?? ""
+        if (statusText.isEmpty) {
+            statusTextField.layer.backgroundColor = UIColor.red.withAlphaComponent(0.3).cgColor
+        } else {
+            statusLabel.text = statusText
+            statusTextField.text = ""
+            endEditing(true)
+        }
     }
     
-    @objc private func statusTextChanged(){
-        statusText = statusTextField.text ?? " "
+    @objc private func statusTextChanged() {
+        statusTextField.layer.backgroundColor = UIColor.white.cgColor
     }
     
     func setupView() {
