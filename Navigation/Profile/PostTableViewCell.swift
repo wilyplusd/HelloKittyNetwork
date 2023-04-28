@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol PostTableViewCellDelegate: AnyObject {
+    func likeTapped(cell: PostTableViewCell, indexPath: IndexPath)
+    func imageTapped(cell: PostTableViewCell, indexPath: IndexPath)
+}
+
 class PostTableViewCell: UITableViewCell {
-    
-    var onLike: (() -> ())?
-    var onOpen: (() -> ())?
-    var onSwipe: (() -> ())?
+
+    weak var delegate: PostTableViewCellDelegate?
+
+    private var indexPath = IndexPath()
     
     private let postContentView: UIView = {
         let view = UIView()
@@ -89,16 +94,20 @@ class PostTableViewCell: UITableViewCell {
         postView.text = "Views: " + String(post.view ?? 0)
     }
     
+    func setIndexPath(indexPath: IndexPath) {
+        self.indexPath = indexPath
+    }
+
     private func customizeCell() {
         postContentView.backgroundColor = .white
         
         let likeTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PostTableViewCell.likeTapped))
-        postLike.isUserInteractionEnabled = true
         postLike.addGestureRecognizer(likeTapRecognizer)
+        postLike.isUserInteractionEnabled = true
         
         let imageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PostTableViewCell.imageTapped))
-        postImageView.isUserInteractionEnabled = true
         postImageView.addGestureRecognizer(imageTapRecognizer)
+        postImageView.isUserInteractionEnabled = true
     }
     
     var insets: CGFloat = 16
@@ -134,11 +143,11 @@ class PostTableViewCell: UITableViewCell {
         ])
     }
     
-    @objc private func likeTapped(sender: UIGestureRecognizer) {
-        onLike?()
+    @objc private func likeTapped() {
+        delegate?.likeTapped(cell: self, indexPath: self.indexPath)
     }
     
-    @objc private func imageTapped(sender: UIGestureRecognizer) {
-        onOpen?()
+    @objc private func imageTapped() {
+        delegate?.imageTapped(cell: self, indexPath: self.indexPath)
     }
 }

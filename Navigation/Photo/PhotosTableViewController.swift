@@ -83,8 +83,8 @@ extension PhotosTableViewController: UICollectionViewDelegateFlowLayout {
     private var insetsCount: CGFloat { return elementCount + 1 }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let height = collectionView.bounds.height - sideInset * 2
-            return CGSize(width: height, height: height)
+        let height = collectionView.bounds.height - sideInset * 2
+        return CGSize(width: height, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

@@ -65,6 +65,7 @@ final class LogInHederView: UIView {
         textField.autocapitalizationType = .none
         textField.textColor = UIColor.black
         textField.layer.cornerRadius = 12
+        
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 10

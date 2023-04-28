@@ -3,6 +3,8 @@ import UIKit
 final class PhotosViewController: UIViewController {
     
     private let photo: [Photo] = Photo.fillPhoto()
+    
+    private var initialImageRect = CGRect()
 
     private lazy var collectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -13,6 +15,27 @@ final class PhotosViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         return collectionView
+    }()
+    
+    private lazy var backView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.7
+        return view
+    }()
+    
+    private lazy var  animatingImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private lazy var closeImageButton = {
+        let button = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 66, y: 80, width: 50, height: 50))
+        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.addTarget(self, action: #selector(closeImageTapped), for: .touchUpInside)
+        return button
     }()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +72,43 @@ final class PhotosViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
+    
+    private func animateImage(_ image: UIImage?) {
+        view.addSubview(backView)
+        view.addSubview(animatingImageView)
+        view.addSubview(closeImageButton)
+        animatingImageView.image = image
+        animatingImageView.frame = CGRect(x: initialImageRect.origin.x,
+                                          y: initialImageRect.origin.y,
+                                          width: initialImageRect.width,
+                                          height: initialImageRect.height)
+        UIView.animate(withDuration: 0.6) {
+            self.animatingImageView.frame.size = CGSize(width: UIScreen.main.bounds.width,
+                                                        height: UIScreen.main.bounds.width)
+            self.animatingImageView.center = self.view.center
+            self.animatingImageView.alpha = 1.0
+        }
+    }
+    
+    private func animateImageToInitial() {
+        backView.removeFromSuperview()
+        closeImageButton.removeFromSuperview()
+        UIView.animate(withDuration: 0.6) {
+            let rect = self.initialImageRect
+            self.animatingImageView.frame = CGRect(x: rect.origin.x,
+                                                   y: rect.origin.y,
+                                                   width: rect.width,
+                                                   height: rect.height)
+            self.animatingImageView.alpha = 0.0
+        } completion: { _ in
+            self.animatingImageView.removeFromSuperview()
+            self.animatingImageView.image = nil
+        }
+    }
+    
+    @objc private func closeImageTapped() {
+        animateImageToInitial()
+    }
 }
 
 extension PhotosViewController: UICollectionViewDataSource {
@@ -63,6 +123,8 @@ extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as! PhotosCollectionViewCell
         cell.setupCell(photo: photo[indexPath.row])
+        cell.setIndexPath(indexPath: indexPath)
+        cell.delegate = self
         return cell
     }
 }
@@ -87,5 +149,13 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         sideInset
+    }
+}
+
+extension PhotosViewController: PhotosCollectionCellDelegate {
+    func photoTapped(image: UIImage?, indexPath: IndexPath) {
+        let cellAttr = collectionView.layoutAttributesForItem(at: indexPath)!
+        initialImageRect = collectionView.convert(cellAttr.frame, to: collectionView.superview)
+        animateImage(image)
     }
 }

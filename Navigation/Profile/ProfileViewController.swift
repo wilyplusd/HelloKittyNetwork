@@ -50,23 +50,8 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
         cell.setPost(post: post[indexPath.row])
-        cell.onLike = {
-            let i = indexPath.row
-            var p = self.post[i]
-            p.likes = (p.likes ?? 0) + 1
-            self.post[i] = p
-            cell.setPost(post: p)
-        }
-        cell.onOpen = {
-            let i = indexPath.row
-            var p = self.post[i]
-            let postController = PostViewController(post: p)
-            self.present(postController, animated: true)
-
-            p.view = (p.view ?? 0) + 1
-            self.post[i] = p
-            cell.setPost(post: p)
-        }
+        cell.setIndexPath(indexPath: indexPath)
+        cell.delegate = self
         return cell
     }
     
@@ -106,3 +91,24 @@ extension ProfileViewController: UITableViewDataSource {
 }
 
 extension ProfileViewController: UITableViewDelegate {}
+
+extension ProfileViewController: PostTableViewCellDelegate {
+    func likeTapped(cell: PostTableViewCell, indexPath: IndexPath) {
+        let i = indexPath.row
+        var p = self.post[i]
+        p.likes = (p.likes ?? 0) + 1
+        self.post[i] = p
+        cell.setPost(post: p)
+    }
+
+    func imageTapped(cell: PostTableViewCell, indexPath: IndexPath) {
+        let i = indexPath.row
+        var p = self.post[i]
+        let postController = PostViewController(post: p)
+        self.present(postController, animated: true)
+
+        p.view = (p.view ?? 0) + 1
+        self.post[i] = p
+        cell.setPost(post: p)
+    }
+}
